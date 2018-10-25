@@ -1,0 +1,69 @@
+version: '3.3'
+
+services:
+    nginx:
+
+        image: nginx:latest
+        restart: always
+        container_name: nginx
+
+        ports:
+            - "8080:80"
+            - "443:443"
+
+        volumes:
+            - ./Nginx/core:/etc/nginx/conf.d
+            - ./Nginx/www:/var/www/
+            - ./Nginx/Logs:/var/log/nginx/
+            - ./Nginx/html:/usr/share/nginx/html/
+
+        links:
+            - php
+
+    mysql:
+
+        image: mysql:5.6
+        
+        command: mysqld --innodb-flush-method=O_DSYNC --innodb-use-native-aio=OFF --log_bin=ON
+        
+        ports:
+            - "33306:3306"
+
+        container_name: mysql
+
+        environment:
+
+            - MYSQL_ROOT_PASSWORD=chd8h14
+            - MYSQL_DATABASE=magento2
+            - MYSQL_USER=magento2
+            - MYSQL_PASSWORD=magento2
+
+        volumes:
+            - ./MySQL:/var/lib/mysql
+
+
+    php:
+        
+        build: PHP
+        restart: always
+        container_name: php-fpm
+
+        volumes:
+            - ./Nginx/www:/var/www
+
+        links:
+            - mysql
+
+
+    phpmyadmin:
+
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        container_name: phpmyadmin
+
+        ports:
+
+            - "8090:80"
+
+        links:
+            - mysql:db

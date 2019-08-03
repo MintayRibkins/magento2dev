@@ -21,11 +21,9 @@ services:
             - php
 
     mysql:
-
-        image: mysql:5.6
-        
-        command: mysqld --innodb-flush-method=O_DSYNC --innodb-use-native-aio=OFF --log_bin=ON
-        
+        restart: always
+        image: percona
+#        command: mysqld --innodb-flush-method=O_DSYNC --innodb-use-native-aio=OFF --log_bin=ON
         ports:
             - "33306:3306"
 

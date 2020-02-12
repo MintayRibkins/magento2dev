@@ -7,7 +7,7 @@ import std;
 # host = this is ip of your server, for example if it localhost this will be ip your pc in network  example => ('192.168.1.*')
 # but if it will be Docker this should be name of web server container.
 backend default {
-    .host = "nginx1";
+    .host = "nginx";
     .port = "8080";
     .first_byte_timeout = 600s;
 }
